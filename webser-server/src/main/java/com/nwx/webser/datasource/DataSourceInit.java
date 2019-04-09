@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @Auther: Neil
  * @Date: 2019/4/9 11:17
  */
-
+@Component
 public class DataSourceInit implements InitializingBean {
 
     @Override
