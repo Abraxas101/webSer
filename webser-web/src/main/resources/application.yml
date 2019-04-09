@@ -11,3 +11,13 @@ dubbo:
     address: zookeeper://localhost:2181
   provider:
     timeout: 1000
+
+spring:
+  activemq:
+    broker-url: tcp://127.0.0.1:61616
+    user=admin: admin
+    password: admin
+    pool:
+      enabled: true
+      max-connections: 5
+      idle-timeout: 30s

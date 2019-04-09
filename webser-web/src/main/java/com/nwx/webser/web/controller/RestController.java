@@ -2,9 +2,13 @@ package com.nwx.webser.web.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.nwx.webser.service.BaseService;
+import org.apache.activemq.command.ActiveMQQueue;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.jms.Destination;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -19,6 +23,9 @@ public class RestController {
     @Reference(version = "1.0")
     private BaseService baseService;
 
+    @Autowired
+    private JmsMessagingTemplate template;
+
     /**
      * @Author Neil
      * @Description sql脚本API
@@ -31,6 +38,9 @@ public class RestController {
 
         String type = request.getParameter("type")==null?"json":request.getParameter("type");
 
+        Destination destination = new ActiveMQQueue("queue01");
+        String message = "我是消息内容, " + serviceId;
+        template.convertAndSend(destination, message);
 
         String str = baseService.test(serviceId);
 
