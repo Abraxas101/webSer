@@ -37,17 +37,6 @@ public class DataSourceUtils {
     }
 
     /**
-     * 获取当前连接池信息
-     * @param dsName
-     * @return
-     */
-    public static Map<String,Object> getDataSourceStat(String dsName){
-        DruidDataSource ds = getDataSource(dsName) ;
-        return ds!=null ? ds.getStatData() : new HashMap<String , Object>() ;
-    }
-
-
-    /**
      * 创建数据库连接池
      * @param database
      * @return
@@ -57,14 +46,14 @@ public class DataSourceUtils {
     public static DruidDataSource createDataSource(Database database) throws SQLException, NoSuchAlgorithmException {
 
         DruidDataSource dataSource = null ;
-        String dsName = "" ;
+        String dsName = database.getDsId() ;
         if((dataSource = getDataSource(dsName))==null){
                 dataSource = new DruidDataSource();
                 dataSource.setName(dsName) ;
-                dataSource.setUrl("");
-                dataSource.setDriverClassName("");
-                dataSource.setUsername("");
-                dataSource.setPassword("");
+                dataSource.setUrl(database.getDsUrl());
+                dataSource.setDriverClassName(database.getDriveClass());
+                dataSource.setUsername(database.getUserName());
+                dataSource.setPassword(database.getPassword());
 
                 dataSource.setInitialSize(5);
                 dataSource.setMinIdle(5);
@@ -79,23 +68,16 @@ public class DataSourceUtils {
                 dataSource.setTestOnReturn(false) ;
                 dataSource.setPoolPreparedStatements(true) ;
                 dataSource.setMaxPoolPreparedStatementPerConnectionSize(20) ;
-                dataSource.setValidationQuery("SELECT 1 from dual") ;
                 dataSource.setTimeBetweenLogStatsMillis(3600000) ;
                 dataSource.addConnectionProperty("remarksReporting", "true");
 
-                //sql中有中文会报错，所以在此注释掉  stat监控统计用   wall防sql注入  log4j日志
-                //dataSource.setFilters("stat,wall");
-                //dataSource.setFilters("stat");
                 Connection connection = dataSource.getConnection();
                 Statement statement = connection.createStatement();
-                ResultSet result = statement.executeQuery("SELECT 1 from dual") ;
-                String schema = null ;
 
+                statement.execute(database.getValidationQuery());
 
-                result.close();
                 statement.close();
                 connection.close();
-
         }
         return dataSource;
 
