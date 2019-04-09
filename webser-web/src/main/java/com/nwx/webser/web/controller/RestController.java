@@ -5,6 +5,8 @@ import com.nwx.webser.service.BaseService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @version : V1.0
  * @Description: api服务请求
@@ -25,7 +27,10 @@ public class RestController {
      * @return java.lang.String
      **/
     @RequestMapping(value = "/sqlrest/{serviceId}")
-    public String sqlrest(@PathVariable String serviceId){
+    public String sqlrest(@PathVariable String serviceId, HttpServletRequest request){
+
+        String type = request.getParameter("type")==null?"json":request.getParameter("type");
+
 
         String str = baseService.test(serviceId);
 
