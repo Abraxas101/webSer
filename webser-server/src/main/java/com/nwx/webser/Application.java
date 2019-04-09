@@ -1,10 +1,10 @@
-package com.nwx.webser.service;
+package com.nwx.webser;
 
 import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@EnableDubbo
+//@EnableDubbo
 @SpringBootApplication
 public class Application {
 
