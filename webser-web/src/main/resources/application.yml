@@ -1,6 +1,12 @@
 server:
   port: 8089
 
+logging:
+  #path:
+  #file: webser_mq.log
+  level:
+    root: INFO
+
 dubbo:
   application:
     name: webser-web
